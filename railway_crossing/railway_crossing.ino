@@ -1,4 +1,5 @@
 const int SENSOR_1_PIN = A0;
+const int SENSOR_2_PIN = A1;
 
 const int LED_WHITE_PIN = 3;
 const int LED_RED_LEFT_PIN = 4;
@@ -9,6 +10,7 @@ const int BLINK_DELAY = 400;
 const int LIGHT_THRESHOLD = 50;
 
 int sensor1Value = 0;
+int sensor2Value = 0;
 int vonat = 0;
 
 void setup() {
@@ -20,14 +22,21 @@ void setup() {
 
 void loop() {
   sensor1Value = analogRead(SENSOR_1_PIN);
+  sensor2Value = analogRead(SENSOR_2_PIN);
 
   Serial.print("sensor 1: ");
   Serial.println(sensor1Value);
+  Serial.print("sensor 2: ");
+  Serial.println(sensor2Value);
+
   
   if (sensor1Value < LIGHT_THRESHOLD) {  
     vonat = 1;
   }
-  else {
+  if (sensor2Value < LIGHT_THRESHOLD && vonat == 1) {
+     vonat = 2;
+  }
+  if (sensor2Value > LIGHT_THRESHOLD && vonat == 2) {
      vonat = 0;
   }
 
